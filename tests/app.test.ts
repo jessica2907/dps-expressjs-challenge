@@ -7,11 +7,13 @@ const AUTH_TOKEN = 'Password123';
 
 describe('REST API Tests', () => {
 	let projectId: string;
+	//let reportId: string;
 
 	// Runs before each test
 	beforeEach(() => {
 		// Clear the database to ensure isolation between tests
 		db.run('DELETE FROM projects');
+		db.run('DELETE FROM reports');
 
 		// Insert a sample project and store its ID for the tests
 		projectId = uuidv4();
@@ -72,5 +74,18 @@ describe('REST API Tests', () => {
 			.delete(`/projects/${projectId}`)
 			.set('Authorization', AUTH_TOKEN);
 		expect(res.statusCode).toBe(204);
+	});
+
+	// Test: Create a report
+	it('POST /projects/:project_id/reports - Create a report', async () => {
+		const res = await request(app)
+			.post(`/projects/${projectId}/reports`)
+			.set('Authorization', AUTH_TOKEN)
+			.send({ text: 'Test Report Text' });
+
+		//expect(res.statusCode).toBe(201);
+		expect(res.body).toHaveProperty('id');
+		expect(res.body.text).toBe('Test Report Text');
+		expect(res.body.project_id).toBe(projectId);
 	});
 });
