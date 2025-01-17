@@ -7,9 +7,14 @@ const AUTH_TOKEN = 'Password123';
 
 describe('REST API Tests', () => {
 	let projectId: string;
+	let reportId: string;
 
 	// Runs before each test
 	beforeEach(() => {
+		// Clear the database to ensure isolation between tests
+		db.run('DELETE FROM projects');
+		db.run('DELETE FROM reports');
+
 		// Clear the database to ensure isolation between tests
 		db.run('DELETE FROM projects');
 		db.run('DELETE FROM reports');
@@ -22,6 +27,17 @@ describe('REST API Tests', () => {
 				id: projectId,
 				name: 'Sample Project',
 				description: 'A project preloaded for testing',
+			},
+		);
+
+		// Insert a sample report and store its ID for the tests
+		reportId = uuidv4();
+		db.run(
+			'INSERT INTO reports (id, text, projectid) VALUES (@id, @text, @projectid)',
+			{
+				id: reportId,
+				text: 'Sample Report Text',
+				projectid: projectId,
 			},
 		);
 	});
@@ -87,5 +103,15 @@ describe('REST API Tests', () => {
 		expect(res.body).toHaveProperty('id');
 		expect(res.body.text).toBe('Test Report Text');
 		expect(res.body.project_id).toBe(projectId);
+	});
+
+	// Test: Get all reports
+	it('GET /reports - Get all reports', async () => {
+		const res = await request(app)
+			.get('/reports')
+			.set('Authorization', AUTH_TOKEN);
+
+		expect(res.statusCode).toBe(200);
+		expect(Array.isArray(res.body)).toBeTruthy();
 	});
 });

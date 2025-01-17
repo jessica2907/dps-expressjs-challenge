@@ -26,3 +26,9 @@ export const createReport = (req: Request, res: Response) => {
 	// Send a success response with the newly created report details
 	res.status(201).json({ id, text, project_id });
 };
+
+// Get all reports
+export const getAllReports = (req: Request, res: Response) => {
+	const reports = db.query('SELECT * FROM reports');
+	res.status(200).json(reports);
+};
