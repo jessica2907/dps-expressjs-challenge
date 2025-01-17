@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import db from '../services/db.service';
+import { Project } from '../models/project.model';
 
 // Create a project
 export const createProject = (req: Request, res: Response) => {
@@ -16,7 +17,7 @@ export const createProject = (req: Request, res: Response) => {
 
 // Get all projects
 export const getAllProjects = (req: Request, res: Response) => {
-	const projects = db.query('SELECT * FROM projects');
+	const projects = db.query('SELECT * FROM projects') as Project[];
 	res.status(200).json(projects);
 };
 
@@ -24,7 +25,7 @@ export const getAllProjects = (req: Request, res: Response) => {
 export const getProjectById = (req: Request, res: Response) => {
 	const project = db.query('SELECT * FROM projects WHERE id = @id', {
 		id: req.params.id,
-	});
+	}) as Project[];
 
 	if (project.length === 0) {
 		return res.status(404).json({ message: 'Project not found' });
