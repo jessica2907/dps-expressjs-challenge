@@ -178,7 +178,7 @@ describe('REST API Tests', () => {
 		expect(res.statusCode).toBe(204);
 	});
 
-	// Test: Get reports with repeated words
+	// Test: Get reports with repeated words at least 3 times
 	it('GET /reports/repeated-words - Get reports with repeated words', async () => {
 		const res = await request(app)
 			.get('/reports/repeated-words')
