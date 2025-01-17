@@ -15,10 +15,6 @@ describe('REST API Tests', () => {
 		db.run('DELETE FROM projects');
 		db.run('DELETE FROM reports');
 
-		// Clear the database to ensure isolation between tests
-		db.run('DELETE FROM projects');
-		db.run('DELETE FROM reports');
-
 		// Insert a sample project and store its ID for the tests
 		projectId = uuidv4();
 		db.run(
@@ -144,5 +140,46 @@ describe('REST API Tests', () => {
 			.set('Authorization', AUTH_TOKEN);
 
 		expect(res.statusCode).toBe(204);
+	});
+
+	// Test: Get reports with repeated words
+	it('GET /reports/repeated-words - Get reports with repeated words', async () => {
+		db.run(
+			'INSERT INTO reports (id, text, projectid) VALUES (@id, @text, @projectid)',
+			{
+				id: uuidv4(),
+				text: 'Word word word appears multiple times here.', // A report with repeated words
+				projectid: projectId,
+			},
+		);
+
+		db.run(
+			'INSERT INTO reports (id, text, projectid) VALUES (@id, @text, @projectid)',
+			{
+				id: uuidv4(),
+				text: 'Unique words only.', // A report with no repeated words
+				projectid: projectId,
+			},
+		);
+
+		db.run(
+			'INSERT INTO reports (id, text, projectid) VALUES (@id, @text, @projectid)',
+			{
+				id: uuidv4(),
+				text: 'HELLO hello hElLo hellO HEllo hello hELLo.', // A report with repeated words
+				projectid: projectId,
+			},
+		);
+
+		const res = await request(app)
+			.get('/reports/repeated-words')
+			.set('Authorization', AUTH_TOKEN);
+
+		expect(res.statusCode).toBe(200);
+		expect(Array.isArray(res.body)).toBeTruthy();
+		expect(res.body.length).toBe(2); // Only one report has repeated words
+		expect(res.body[0].text).toBe(
+			'Word word word appears multiple times here.',
+		);
 	});
 });

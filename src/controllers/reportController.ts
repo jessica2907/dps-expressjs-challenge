@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import db from '../services/db.service';
+import { Report } from '../models/report.model';
 
 // Create a report
 export const createReport = (req: Request, res: Response) => {
@@ -73,4 +74,28 @@ export const deleteReport = (req: Request, res: Response) => {
 	db.run('DELETE FROM reports WHERE id = @id', { id });
 
 	res.status(204).send();
+};
+
+// Special API Endpoint: Retrieve reports where the same word appears at least three times
+export const getReportsWithRepeatedWords = (req: Request, res: Response) => {
+	// Use type assertion to cast the query result to Report[]
+	const reports = db.query('SELECT * FROM reports') as Report[];
+
+	const reportsWithRepeatedWords = reports.filter((report) => {
+		const wordCounts: { [key: string]: number } = {};
+
+		// Split the text into words and count occurrences
+		report.text
+			.toLowerCase()
+			.replace(/[^a-z0-9\s]/g, '') // Remove punctuation
+			.split(/\s+/) // Split by spaces
+			.forEach((word) => {
+				wordCounts[word] = (wordCounts[word] || 0) + 1;
+			});
+
+		// Check if any word appears at least three times
+		return Object.values(wordCounts).some((count) => count >= 3);
+	});
+
+	res.status(200).json(reportsWithRepeatedWords);
 };
