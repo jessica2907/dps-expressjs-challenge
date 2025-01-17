@@ -9,7 +9,7 @@ export const createReport = (req: Request, res: Response) => {
 
 	const project = db.query('SELECT * FROM projects WHERE id = @project_id', {
 		project_id,
-	});
+	}) as Report[];
 
 	// If project doesn't exist, return an error
 	if (project.length === 0) {
@@ -29,14 +29,16 @@ export const createReport = (req: Request, res: Response) => {
 
 // Get all reports
 export const getAllReports = (req: Request, res: Response) => {
-	const reports = db.query('SELECT * FROM reports');
+	const reports = db.query('SELECT * FROM reports') as Report[];
 	res.status(200).json(reports);
 };
 
 // Get a report by ID
 export const getReportById = (req: Request, res: Response) => {
 	const { id } = req.params;
-	const report = db.query('SELECT * FROM reports WHERE id = @id', { id });
+	const report = db.query('SELECT * FROM reports WHERE id = @id', {
+		id,
+	}) as Report[];
 
 	if (report.length === 0) {
 		return res.status(404).json({ message: 'Report not found' });
@@ -50,7 +52,9 @@ export const updateReport = (req: Request, res: Response) => {
 	const { id } = req.params;
 	const { text } = req.body;
 
-	const report = db.query('SELECT * FROM reports WHERE id = @id', { id });
+	const report = db.query('SELECT * FROM reports WHERE id = @id', {
+		id,
+	}) as Report[];
 
 	if (report.length === 0) {
 		return res.status(404).json({ message: 'Report not found' });
@@ -65,7 +69,9 @@ export const updateReport = (req: Request, res: Response) => {
 export const deleteReport = (req: Request, res: Response) => {
 	const { id } = req.params;
 
-	const report = db.query('SELECT * FROM reports WHERE id = @id', { id });
+	const report = db.query('SELECT * FROM reports WHERE id = @id', {
+		id,
+	}) as Report[];
 
 	if (report.length === 0) {
 		return res.status(404).json({ message: 'Report not found' });
