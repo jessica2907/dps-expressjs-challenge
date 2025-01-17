@@ -8,7 +8,8 @@ export const authenticate = (
 	res: Response,
 	next: NextFunction,
 ) => {
-	const token = req.headers.authorization;
+	// Check header or query string
+	const token = req.headers['authorization'] || req.query.auth;
 
 	if (token === AUTH_TOKEN) {
 		next(); // Token is valid, proceed to the next middleware or route handler
