@@ -125,4 +125,15 @@ describe('REST API Tests', () => {
 		expect(res.body).toHaveProperty('id', reportId);
 		expect(res.body.text).toBe('Sample Report Text');
 	});
+
+	// Test: Update a report
+	it('PUT /reports/:id - Update a report', async () => {
+		const res = await request(app)
+			.put(`/reports/${reportId}`)
+			.set('Authorization', AUTH_TOKEN)
+			.send({ text: 'Updated Report Text' });
+
+		expect(res.statusCode).toBe(200);
+		expect(res.body).toHaveProperty('text', 'Updated Report Text');
+	});
 });

@@ -44,3 +44,19 @@ export const getReportById = (req: Request, res: Response) => {
 
 	res.status(200).json(report[0]);
 };
+
+// Update a report by ID
+export const updateReport = (req: Request, res: Response) => {
+	const { id } = req.params;
+	const { text } = req.body;
+
+	const report = db.query('SELECT * FROM reports WHERE id = @id', { id });
+
+	if (report.length === 0) {
+		return res.status(404).json({ message: 'Report not found' });
+	}
+
+	db.run('UPDATE reports SET text = @text WHERE id = @id', { id, text });
+
+	res.status(200).json({ id, text });
+};
