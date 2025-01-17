@@ -114,4 +114,15 @@ describe('REST API Tests', () => {
 		expect(res.statusCode).toBe(200);
 		expect(Array.isArray(res.body)).toBeTruthy();
 	});
+
+	// Test: Get a report by ID
+	it('GET /reports/:id - Get a report by ID', async () => {
+		const res = await request(app)
+			.get(`/reports/${reportId}`)
+			.set('Authorization', AUTH_TOKEN);
+
+		expect(res.statusCode).toBe(200);
+		expect(res.body).toHaveProperty('id', reportId);
+		expect(res.body.text).toBe('Sample Report Text');
+	});
 });

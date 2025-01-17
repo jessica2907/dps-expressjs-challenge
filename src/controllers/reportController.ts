@@ -32,3 +32,15 @@ export const getAllReports = (req: Request, res: Response) => {
 	const reports = db.query('SELECT * FROM reports');
 	res.status(200).json(reports);
 };
+
+// Get a report by ID
+export const getReportById = (req: Request, res: Response) => {
+	const { id } = req.params;
+	const report = db.query('SELECT * FROM reports WHERE id = @id', { id });
+
+	if (report.length === 0) {
+		return res.status(404).json({ message: 'Report not found' });
+	}
+
+	res.status(200).json(report[0]);
+};
