@@ -7,7 +7,6 @@ const AUTH_TOKEN = 'Password123';
 
 describe('REST API Tests', () => {
 	let projectId: string;
-	//let reportId: string;
 
 	// Runs before each test
 	beforeEach(() => {
@@ -77,13 +76,14 @@ describe('REST API Tests', () => {
 	});
 
 	// Test: Create a report
-	it('POST /projects/:project_id/reports - Create a report', async () => {
+	it('POST /reports - Create a report', async () => {
 		const res = await request(app)
-			.post(`/projects/${projectId}/reports`)
+			.post('/reports') // Endpoint for report creation
 			.set('Authorization', AUTH_TOKEN)
-			.send({ text: 'Test Report Text' });
+			.send({ text: 'Test Report Text', project_id: projectId });
 
-		//expect(res.statusCode).toBe(201);
+		// Ensure that the response has the expected properties
+		expect(res.statusCode).toBe(201);
 		expect(res.body).toHaveProperty('id');
 		expect(res.body.text).toBe('Test Report Text');
 		expect(res.body.project_id).toBe(projectId);
