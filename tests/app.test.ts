@@ -136,4 +136,13 @@ describe('REST API Tests', () => {
 		expect(res.statusCode).toBe(200);
 		expect(res.body).toHaveProperty('text', 'Updated Report Text');
 	});
+
+	// Test: Delete a report
+	it('DELETE /reports/:id - Delete a report', async () => {
+		const res = await request(app)
+			.delete(`/reports/${reportId}`)
+			.set('Authorization', AUTH_TOKEN);
+
+		expect(res.statusCode).toBe(204);
+	});
 });

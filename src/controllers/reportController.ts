@@ -60,3 +60,18 @@ export const updateReport = (req: Request, res: Response) => {
 
 	res.status(200).json({ id, text });
 };
+
+// Delete a report by ID
+export const deleteReport = (req: Request, res: Response) => {
+	const { id } = req.params;
+
+	const report = db.query('SELECT * FROM reports WHERE id = @id', { id });
+
+	if (report.length === 0) {
+		return res.status(404).json({ message: 'Report not found' });
+	}
+
+	db.run('DELETE FROM reports WHERE id = @id', { id });
+
+	res.status(204).send();
+};
