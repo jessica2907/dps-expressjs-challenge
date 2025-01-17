@@ -4,9 +4,8 @@ import db from '../services/db.service';
 
 // Create a report
 export const createReport = (req: Request, res: Response) => {
-	const { text, project_id } = req.body; // Extract 'text' and 'project_id' from request body
+	const { text, project_id } = req.body;
 
-	// Check if the associated project exists
 	const project = db.query('SELECT * FROM projects WHERE id = @project_id', {
 		project_id,
 	});
