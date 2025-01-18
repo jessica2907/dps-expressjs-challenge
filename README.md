@@ -1,5 +1,46 @@
 # DPS Backend Coding Challenge
 
+## Developer's Note
+
+The project can be tested with Jest and Supertest. If you don't have it yet, install it first (commands can look different depending on the OS, this was tested in MacOS)
+
+```
+npm install --save-dev ts-jest @types/jest
+```
+Run the server and execute the test. It will execute `tests/app.test.ts`
+```
+npx jest
+```
+The output should look like:
+
+![testing output](images/testing_output.png)
+
+While the server is running, a welcome page is also accessible at http://localhost:3000/?auth=Password123
+
+![welcome](images/welcome.png)
+
+The endpoints are organized as follows:
+```
+Root Endpoint (/)
+
+Projects Endpoints (/projects)
+POST    /projects       Creates a new project.
+GET     /projects       Retrieves all projects.
+GET     /projects/:id   Retrieves a specific project by its ID.
+PUT     /projects/:id   Updates a project by its ID.
+DELETE  /projects/:id   Deletes a project by its ID.
+
+Reports Endpoints (/reports)
+POST    /reports                    Creates a new report.
+GET     /reports                    Retrieves all reports.
+GET     /reports/repeated-words     Retrieves reports where a word appears at least three times (this route is checked before other report-specific routes).
+GET     /reports/:id                Retrieves a specific report by its ID.
+PUT     /reports/:id                Updates a report by its ID.
+DELETE  /reports/:id                Deletes a report by its ID.
+```
+
+---
+Template's original README is kept below for documentation.
 ## Overview
 
 This repository contains a very basic web application based on Typescript and Express.js. Main application file is `index.ts`. Node and npm are required.
