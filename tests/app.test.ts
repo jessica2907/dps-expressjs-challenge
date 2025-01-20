@@ -186,7 +186,7 @@ describe('REST API Tests', () => {
 
 		expect(res.statusCode).toBe(200);
 		expect(Array.isArray(res.body)).toBeTruthy();
-		expect(res.body.length).toBe(2); // Only two reports has repeated words
+		expect(res.body.length).toBe(2); // Only two reports have repeated words
 		expect(res.body[0].text).toBe(
 			'Word word word appears multiple times here.',
 		);
