@@ -190,5 +190,8 @@ describe('REST API Tests', () => {
 		expect(res.body[0].text).toBe(
 			'Word word word appears multiple times here.',
 		);
+		expect(res.body[1].text).toBe(
+			'HELLO hello hElLo hellO HEllo hello hELLo.',
+		);
 	});
 });
