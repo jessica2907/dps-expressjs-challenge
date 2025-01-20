@@ -2,26 +2,17 @@
 
 ## Developer's Note
 
-The project can be tested with Jest and Supertest. If you don't have it yet, install it first (commands can look different depending on the OS, this was tested in MacOS)
-
+Run the application with
 ```
-npm install --save-dev ts-jest @types/jest
+npm run dev
 ```
-Run the server and execute the test. It will execute `tests/app.test.ts`
-```
-npx jest
-```
-The output should look like:
-
-![testing output](images/testing_output.png)
-
-While the server is running, a welcome page is also accessible at http://localhost:3000/?auth=Password123
+A welcome page is accessible at http://localhost:3000/?auth=Password123
 
 ![welcome](images/welcome.png)
 
 The endpoints are organized as follows:
 ```
-Root Endpoint (/)
+Welcome page (/)
 
 Projects Endpoints (/projects)
 POST    /projects       Creates a new project.
@@ -38,6 +29,20 @@ GET     /reports/:id                Retrieves a specific report by its ID.
 PUT     /reports/:id                Updates a report by its ID.
 DELETE  /reports/:id                Deletes a report by its ID.
 ```
+Make sure to include `?auth=Password123` at the end of the path.
+
+The application was tested with Jest and Supertest, which were installed with the following command (MacOS)
+
+```
+npm install --save-dev ts-jest @types/jest
+```
+To run the application and execute the test:
+```
+npx jest
+```
+The output should look like:
+
+![testing output](images/testing_output.png)
 
 ---
 Template's original README is kept below for documentation.
